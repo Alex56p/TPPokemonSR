@@ -259,6 +259,12 @@ namespace PokemonSRSite
             playerspokemon.player = p;
         }
 
+        public PlayersPokemons(object cs)
+            : base(cs)
+        {
+            playerspokemon = new PlayersPokemon();
+        }
+
         public PlayersPokemons()
         {
             playerspokemon = new PlayersPokemon();

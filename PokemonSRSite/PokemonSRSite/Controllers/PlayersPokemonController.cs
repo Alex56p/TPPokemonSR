@@ -57,5 +57,22 @@ namespace PokemonSRSite.Controllers
         {
             return View(new PlayersPokemon());
         }
+
+        public ActionResult Details(String Id)
+        {
+            Players players = new Players(Session["Main_DB"]);
+            if (players.SelectByUsername(Id))
+            {
+                PlayersPokemons pkmn = new PlayersPokemons(players.player, Session["Main_DB"]);
+                if (pkmn.SelectByID(Id))
+                    return View(pkmn.playerspokemon);
+                else
+                    return RedirectToAction("Lister", "PlayersPokemon");
+            }
+            else
+            {
+                return RedirectToAction("Lister", "PlayersPokemon");
+            }
+        }
     }
 }
