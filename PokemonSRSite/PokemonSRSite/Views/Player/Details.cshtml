@@ -1,0 +1,47 @@
+﻿@model PokemonSRSite.Player
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h3>@Html.DisplayFor(model => model.Username)</h3>
+	<hr />
+
+    <table>
+        <tr>
+            <th>
+                 @Html.DisplayNameFor(model => model.Money)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Division)
+            </th>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.Money)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.City)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Division)
+            </td>
+        </tr>
+    </table>
+</div>
+<p>
+    <a href='@Url.Action("Editer", "Player", new { id = Model.Username })' style="text-decoration:none">
+        <img src='@Url.Content("~/Images/UI/Edit.png")'
+             alt="Editer" class="CMD_Icon_3"
+             data-toggle="tooltip"
+             title="Éditer le film [@Model.Username]" />
+    </a> &nbsp;
+ |
+    @Html.ActionLink("Retour", "Lister")
+</p>

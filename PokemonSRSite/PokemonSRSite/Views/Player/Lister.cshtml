@@ -1,0 +1,108 @@
+﻿@model IEnumerable<PokemonSRSite.Player>
+
+<h2>Players</h2>
+
+<p>
+    <a href='@Url.Action("Ajouter", "Player")' style="text-decoration:none">
+        <img src='@Url.Content("~/Images/UI/Add.png")'
+             alt="Ajouter" class="CMD_Icon_3"
+             data-toggle="tooltip"
+             title="Ajouter un film" />
+    </a>
+</p>
+
+<table class="table">
+    <tr>
+
+        <th>
+            <a href='@Url.Action("Sort", "Player",new {sortBy = "Username"})' style="text-decoration:none">
+                <img src='@Url.Content("~/Images/UI/Sort.png")'
+                     alt="Sort" class="CMD_Icon_4"
+                     data-toggle="tooltip"
+                     title="Trier par Username" />
+            </a>
+
+            @Html.DisplayNameFor(model => model.Username)
+        </th>
+        <th>
+            <a href='@Url.Action("Sort", "Player",new {sortBy = "Money"})' style="text-decoration:none">
+                <img src='@Url.Content("~/Images/UI/Sort.png")'
+                     alt="Sort" class="CMD_Icon_4"
+                     data-toggle="tooltip"
+                     title="Trier par Argent" />
+            </a>
+             
+            @Html.DisplayNameFor(model => model.Money)
+        </th>
+        <th>
+            <a href='@Url.Action("Sort", "Player", new { sortBy = "City" })' style="text-decoration:none">
+                <img src='@Url.Content("~/Images/UI/Sort.png")'
+                     alt="Sort" class="CMD_Icon_4"
+                     data-toggle="tooltip"
+                     title="Trier par Ville" />
+            </a>
+
+           @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            <a href='@Url.Action("Sort", "Player", new { sortBy = "Division" })' style="text-decoration:none">
+                <img src='@Url.Content("~/Images/UI/Sort.png")'
+                     alt="Sort" class="CMD_Icon_4"
+                     data-toggle="tooltip"
+                     title="Trier par Division" />
+            </a>
+
+           @Html.DisplayNameFor(model => model.Division)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Money)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Division)
+            </td>
+            <td>
+                <a href='@Url.Action("Details", "Player", new { id = item.Username })' style="text-decoration:none">
+                    <img src='@Url.Content("~/Images/UI/Details.png")'
+                         alt="Détails" class="CMD_Icon_3"
+                         data-toggle="tooltip"
+                         title="Voir les détails du film [@item.Username]" />
+                </a> &nbsp;
+
+                <a href='@Url.Action("Lister", "PlayersPokemon", new { id = item.Username })' style="text-decoration:none">
+                    <img src='@Url.Content("~/Images/UI/Details.png")'
+                         alt="Voir les Pokemons" class="CMD_Icon_3"
+                         data-toggle="tooltip"
+                         title="Voir les pokémons de l'usager [@item.Username]" />
+                </a>&nbsp;
+
+                <a href='@Url.Action("Editer", "Player", new { id = item.Username })' style="text-decoration:none">
+                    <img src='@Url.Content("~/Images/UI/Edit.png")'
+                         alt="Editer" class="CMD_Icon_3"
+                         data-toggle="tooltip"
+                         title="Éditer le film [@item.Username]" />
+                </a> &nbsp;
+                                
+                <a href='@Url.Action("Effacer", "Player", new { id = item.Username })' style="text-decoration:none">
+                    <img src='@Url.Content("~/Images/UI/Delete.png")'
+                         alt="Delete" class="CMD_Icon_3"
+                         onclick="BBConfirm('Effacer le film [@item.Username.Replace(" '", @"\' ")]?', '@Url.Action("Effacer", "Player", new { id = item.Username })')"
+                         data-toggle="tooltip"
+                         title="Effacer le film [@item.Username]" />
+                 </a>&nbsp;
+            </td>
+        </tr>
+    }
+
+</table>

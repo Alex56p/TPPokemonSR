@@ -1,0 +1,59 @@
+﻿@model Pokemon
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h3>@Html.DisplayFor(model => model.Name)</h3>
+    <hr />
+
+    <table>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Attack)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Defense)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Speed)
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <img id="new_image" src="@Url.Content("~" + Model.GetPosterURL())" class="poster" />
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Attack)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Defense)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Speed)
+            </td>
+        </tr>
+    </table>
+</div>
+<p>
+    <a href='@Url.Action("Editer", "Pokemon", new { id = Model.Id })' style="text-decoration:none">
+        <img src='@Url.Content("~/Images/UI/Edit.png")'
+             alt="Editer" class="CMD_Icon_3"
+             data-toggle="tooltip"
+             title="Éditer le film [@Model.Name]" />
+    </a> &nbsp;
+    |
+    @Html.ActionLink("Retour", "Lister")
+</p>

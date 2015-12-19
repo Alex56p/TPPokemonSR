@@ -1,0 +1,47 @@
+﻿@model PokemonSRSite.Move
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h3>@Html.DisplayFor(model => model.Name)</h3>
+	<hr />
+
+    <table>
+        <tr>
+            <th>
+                 @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Damage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accuracy)
+            </th>
+        </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.Type)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Damage)
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.Accuracy)
+            </td>
+        </tr>
+    </table>
+</div>
+<p>
+    <a href='@Url.Action("Editer", "Moves", new { id = Model.Id })' style="text-decoration:none">
+        <img src='@Url.Content("~/Images/UI/Edit.png")'
+             alt="Editer" class="CMD_Icon_3"
+             data-toggle="tooltip"
+             title="Éditer le Move [@Model.Name]" />
+    </a> &nbsp;
+ |
+    @Html.ActionLink("Retour", "Lister")
+</p>
