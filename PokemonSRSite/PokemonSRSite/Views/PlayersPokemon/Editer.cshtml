@@ -1,0 +1,56 @@
+﻿@model PokemonSRSite.PlayersPokemon
+
+@{
+    ViewBag.Title = "Editer";
+}
+
+<h2>Editer</h2>
+
+@using (Html.BeginForm("Editer",
+                        "PlayersPokemon",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>@Html.DisplayFor(model => model.Username)</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Username)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PokemonID, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PokemonID)
+                @Html.ValidationMessageFor(model => model.PokemonID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Level, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Level)
+                @Html.ValidationMessageFor(model => model.Level)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Exp, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Exp)
+                @Html.ValidationMessageFor(model => model.Exp)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Modifier" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Retour", "Lister")
+</div>

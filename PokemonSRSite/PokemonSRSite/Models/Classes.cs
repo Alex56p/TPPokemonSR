@@ -205,13 +205,16 @@ namespace PokemonSRSite
 
     public partial class PlayersMove
     {
-        public int IdPlayersMoves { get; set; }
+        public int Id { get; set; }
         public int IdPlayersPokemon { get; set; }
         public int IdMove { get; set; }
+        public string Username { get; set; }
+        public string MoveName { get; set; }
+        public string PokemonName { get; set; }
 
         public PlayersMove()
         {
-            IdPlayersMoves = 0;
+            Id = 0;
             IdPlayersPokemon = 0;
             IdMove = 0;
         }
@@ -221,7 +224,7 @@ namespace PokemonSRSite
     {
         public PlayersMove playersmove{ get; set; }
 
-        public PlayersMoves(PlayersPokemon pp, object cs)
+        public PlayersMoves( object cs)
             : base(cs)
         {
             playersmove = new PlayersMove();
@@ -241,7 +244,8 @@ namespace PokemonSRSite
                             "FROM Players" +
                             " INNER JOIN PlayersPokemons ON Players.Username = PlayersPokemons.Username" +
                             " INNER JOIN Pokemons ON PlayersPokemons.PokemonID = Pokemons.Id" +
-                            " WHERE Players.Username = " + SqlExpressUtilities.SQLHelper.ConvertValueFromMemberToSQL(playerspokemon.player.Username);
+                            " INNER JOIN PlayersMoves ON PlayersMoves.IdPlayersPokemon = PlayersPokemons.ID" +
+                            " WHERE Players.Username = '" + playersmove.Username + "'";
 
             if (orderBy != "")
                 sql += " ORDER BY " + orderBy;
@@ -249,26 +253,66 @@ namespace PokemonSRSite
             QuerySQL(sql);
         }
 
-        public List<PlayersPokemon> ToList()
+        public List<PlayersMove> ToList()
         {
             List<object> list = this.RecordsList();
-            List<PokemonSRSite.PlayersPokemon> playerspokemon_list = new List<PlayersPokemon>();
-            foreach (PlayersPokemon pp in list)
+            List<PokemonSRSite.PlayersMove> playerspokemon_list = new List<PlayersMove>();
+            foreach (PlayersMove pm in list)
             {
-                pp.PokemonName = getNameByID();
-                playerspokemon_list.Add(pp);
+                pm.MoveName = getMoveName(pm.IdMove.ToString());
+                pm.PokemonName = getPokemonNameByID(pm.IdPlayersPokemon.ToString());
+                pm.Username = getUsername(pm.IdPlayersPokemon.ToString());
+                playerspokemon_list.Add(pm);
             }
 
             return playerspokemon_list;
         }
 
-        public String getNameByID()
+        public string getMoveName(string id)
         {
-            QuerySQL("SELECT Name FROM Pokemons P INNER JOIN PlayersPokemons PP ON PP.PokemonID = P.Id Where ID = " + playerspokemon.PokemonID);
+            QuerySQL("SELECT Name FROM Moves Where ID = " + id);
             String name = "";
             if (reader != null && reader.Read())
             {
                 name = reader.GetString(0);
+                EndQuerySQL();
+            }
+            return name;
+        }
+
+        public String getPokemonNameByID(string id)
+        {
+            string sql = "SELECT Name FROM Pokemons Where ID = " + getPokemonID(id);
+            QuerySQL(sql);
+            String name = "";
+            if (reader != null && reader.Read())
+            {
+                name = reader.GetString(0);
+                EndQuerySQL();
+            }
+            return name;
+        }
+
+        public string getUsername(string id)
+        {
+            QuerySQL("SELECT Username FROM PlayersPokemons WHERE Id = " + id);
+            String name = "";
+            if (reader != null && reader.Read())
+            {
+                name = reader.GetString(0);
+                EndQuerySQL();
+            }
+            return name;
+        }
+
+        public string getPokemonID(string id)
+        {
+            reader = null;
+            QuerySQL("SELECT PokemonID FROM PlayersPokemons WHERE Id = " + id);
+            String name = "";
+            if (reader != null && reader.Read())
+            {
+                name = reader.GetInt32(0).ToString();
                 EndQuerySQL();
             }
             return name;
@@ -281,7 +325,7 @@ namespace PokemonSRSite
         public int PokemonID { get; set; }
         [Display(Name = "Pokemon Name")]
         public string PokemonName { get; set; }
-        public Player player { get; set; }
+        public String Username { get; set; }
         public int Level { get; set; }
         public int Exp { get; set; }
 
@@ -289,7 +333,8 @@ namespace PokemonSRSite
         {
             Id = 0;
             PokemonID = 0;
-            player = new Player();
+            PokemonName = "";
+            Username = "";
             Level = 0;
             Exp = 0;
         }
@@ -299,12 +344,6 @@ namespace PokemonSRSite
     public class PlayersPokemons : SqlExpressUtilities.SqlExpressWrapper
     {
         public PlayersPokemon playerspokemon { get; set; }
-
-        public PlayersPokemons(Player p, object cs) :base(cs)
-        {
-            playerspokemon = new PlayersPokemon();
-            playerspokemon.player = p;
-        }
 
         public PlayersPokemons(object cs)
             : base(cs)
@@ -331,7 +370,7 @@ namespace PokemonSRSite
                             "FROM Players" +
                             " INNER JOIN PlayersPokemons ON Players.Username = PlayersPokemons.Username" +
                             " INNER JOIN Pokemons ON PlayersPokemons.PokemonID = Pokemons.Id" +
-                            " WHERE Players.Username = " + SqlExpressUtilities.SQLHelper.ConvertValueFromMemberToSQL(playerspokemon.player.Username);
+                            " WHERE Players.Username = '" + playerspokemon.Username + "'";
 
             if (orderBy != "")
                 sql += " ORDER BY " + orderBy;
@@ -362,6 +401,22 @@ namespace PokemonSRSite
                 EndQuerySQL();
             }
             return name;
+        }
+
+        public void UdpatePlayersPokemon()
+        {
+            String sql = "UPDATE PlayersPokemons SET [PokemonID] = "+ playerspokemon.PokemonID + 
+                ", [Username] = '" + playerspokemon.Username + 
+                "', [Level] = " + playerspokemon.Level + 
+                ", [Exp] = "+ playerspokemon.Exp + " WHERE [Id] = " + playerspokemon.Id;
+
+            NonQuerySQL(sql);
+        }
+
+        public void AddPlayersPokemon()
+        {
+            String sql = "INSERT INTO PlayersPokemons VALUES(" + playerspokemon.PokemonID + ", '" + playerspokemon.Username + "', " + playerspokemon.Level + ", " + playerspokemon.Exp + ")";
+            NonQuerySQL(sql);
         }
     }   
 }

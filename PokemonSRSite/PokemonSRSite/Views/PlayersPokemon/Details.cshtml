@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PlayersPokemon>
+﻿@model PokemonSRSite.PlayersPokemon
 
 @{
     ViewBag.Title = "Details";
@@ -7,30 +7,41 @@
 <h2>Details</h2>
 
 <div>
-    <h3>@Html.DisplayFor(model => model.players.Username)</h3>
-	<hr />
+    <h3>@Html.LabelFor(model => model.Username)</h3>
+        <hr />
 
-    <table>
-        <tr>
-            <th>
-                 @Html.DisplayNameFor(model => model.PokemonName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Level)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Exp)
-            </th>
-        </tr>
+        <table>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PokemonName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Level)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Exp)
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.PokemonName)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Level)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Exp)
+                </td>
+            </tr>
 
-    </table>
+        </table>
 </div>
 <p>
     <a href='@Url.Action("Editer", "PlayerPokemon", new { id = Model.Id })' style="text-decoration:none">
         <img src='@Url.Content("~/Images/UI/Edit.png")'
              alt="Editer" class="CMD_Icon_3"
              data-toggle="tooltip"
-             title="Éditer le Pokemon du joueur [@Model.players.Username]" />
+             title="Éditer le Pokemon du joueur [@Model.Username]" />
     </a> &nbsp;
  |
     @Html.ActionLink("Retour", "Lister")

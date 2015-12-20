@@ -35,44 +35,83 @@ namespace PokemonSRSite.Controllers
 
         public ActionResult Lister(String Id)
         {
-            Players players = new Players(Session["Main_DB"]);
-            if (players.SelectByUsername(Id))
-            {
-                PlayersPokemons pkmn = new PlayersPokemons(players.player, Session["Main_DB"]);
+
+                PlayersPokemons pkmn = new PlayersPokemons(Session["Main_DB"]);
+                pkmn.playerspokemon.Username = Id;
 
                 String orderBy = "";
                 if (Session["PlayersPokemon_SortBy"] != null)
                     orderBy = (String)Session["PlayersPokemon_SortBy"] + " " + (String)Session["PlayersPokemon_SortOrder"];
 
                 pkmn.SelectAll(orderBy);
-            
+
                 return View(pkmn.ToList());
-            }
-            else
-            {
-                return RedirectToAction("Lister", "Player");
-            }
+
         }
         public ActionResult Ajouter()
         {
             return View(new PlayersPokemon());
         }
 
+        [HttpPost]
+        public ActionResult Ajouter(PlayersPokemon player)
+        {
+            if (ModelState.IsValid)
+            {
+                PlayersPokemons players = new PlayersPokemons(Session["Main_DB"]);
+                players.playerspokemon = player;
+                players.AddPlayersPokemon();
+                return RedirectToAction("Lister", "Player");
+            }
+            return View(player);
+        }
+
+
         public ActionResult Details(String Id)
         {
-            Players players = new Players(Session["Main_DB"]);
-            if (players.SelectByUsername(Id))
+            PlayersPokemons pp = new PlayersPokemons(Session["Main_DB"]);
+            if (pp.SelectByID(Id))
             {
-                PlayersPokemons pkmn = new PlayersPokemons(players.player, Session["Main_DB"]);
-                if (pkmn.SelectByID(Id))
-                    return View(pkmn.playerspokemon);
-                else
-                    return RedirectToAction("Lister", "PlayersPokemon");
+                pp.playerspokemon.PokemonName = pp.getNameByID();
+                return View(pp.playerspokemon);
             }
             else
+                return RedirectToAction("Lister", "Player");
+        }
+
+        public ActionResult Editer(String Id)
+        {
+            PlayersPokemons pp = new PlayersPokemons(Session["Main_DB"]);
+            if (pp.SelectByID(Id))
             {
-                return RedirectToAction("Lister", "PlayersPokemon");
+                pp.playerspokemon.PokemonName = pp.getNameByID();
+                return View(pp.playerspokemon);
             }
+            else
+                return RedirectToAction("Lister", "Player");
+        }
+
+        [HttpPost]
+        public ActionResult Editer(PlayersPokemon pp)
+        {
+            PlayersPokemons players = new PlayersPokemons(Session["Main_DB"]);
+            if (ModelState.IsValid)
+            {
+                if (players.SelectByID(pp.Id))
+                {
+                    players.playerspokemon = pp;
+                    players.UdpatePlayersPokemon();
+                    return RedirectToAction("Lister", "Player");
+                }
+            }
+            return View(pp);
+        }
+
+        public ActionResult Effacer(String Id)
+        {
+            PlayersPokemons pp = new PlayersPokemons(Session["Main_DB"]);
+            pp.DeleteRecordByID(Id);
+            return RedirectToAction("Lister", "PlayersPokemon");
         }
     }
 }

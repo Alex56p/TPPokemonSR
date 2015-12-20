@@ -236,6 +236,9 @@
     <Content Include="Views\Pokemon\Lister.cshtml" />
     <Content Include="Views\PlayersPokemon\Lister.cshtml" />
     <Content Include="Views\PlayersPokemon\Details.cshtml" />
+    <Content Include="Views\PlayersPokemon\Editer.cshtml" />
+    <Content Include="Views\PlayersPokemon\Ajouter.cshtml" />
+    <Content Include="Views\PlayersMove\Lister.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -248,9 +251,7 @@
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\PlayersMove\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

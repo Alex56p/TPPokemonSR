@@ -1,9 +1,9 @@
-﻿@model IEnumerable<PlayersPokemon>
+﻿@model IEnumerable<PlayersMove>
 
 <h2>PlayersPokemon</h2>
 
 <p>
-    <a href='@Url.Action("Ajouter", "PlayersPokemon")' style="text-decoration:none">
+    <a href='@Url.Action("Ajouter", "PlayersMove")' style="text-decoration:none">
         <img src='@Url.Content("~/Images/UI/Add.png")'
              alt="Ajouter" class="CMD_Icon_3"
              data-toggle="tooltip"
@@ -15,7 +15,7 @@
     <tr>
 
         <th>
-            <a href='@Url.Action("Sort", "PlayersPokemon",new {sortBy = "Name"})' style="text-decoration:none">
+            <a href='@Url.Action("Sort", "PlayersMove",new {sortBy = "Name"})' style="text-decoration:none">
                 <img src='@Url.Content("~/Images/UI/Sort.png")'
                      alt="Sort" class="CMD_Icon_4"
                      data-toggle="tooltip"
@@ -25,7 +25,7 @@
             @Html.DisplayNameFor(model => model.Username)
         </th>
         <th>
-            <a href='@Url.Action("Sort", "PlayersPokemon",new {sortBy = "Type"})' style="text-decoration:none">
+            <a href='@Url.Action("Sort", "PlayersMove",new {sortBy = "Type"})' style="text-decoration:none">
                 <img src='@Url.Content("~/Images/UI/Sort.png")'
                      alt="Sort" class="CMD_Icon_4"
                      data-toggle="tooltip"
@@ -35,24 +35,14 @@
             @Html.DisplayNameFor(model => model.PokemonName)
         </th>
         <th>
-            <a href='@Url.Action("Sort", "PlayersPokemon", new { sortBy = "Damage" })' style="text-decoration:none">
+            <a href='@Url.Action("Sort", "PlayersMove", new { sortBy = "Damage" })' style="text-decoration:none">
                 <img src='@Url.Content("~/Images/UI/Sort.png")'
                      alt="Sort" class="CMD_Icon_4"
                      data-toggle="tooltip"
                      title="Trier par Damage" />
             </a>
 
-           @Html.DisplayNameFor(model => model.Level)
-        </th>
-        <th>
-            <a href='@Url.Action("Sort", "PlayersPokemon", new { sortBy = "Accuracy" })' style="text-decoration:none">
-                <img src='@Url.Content("~/Images/UI/Sort.png")'
-                     alt="Sort" class="CMD_Icon_4"
-                     data-toggle="tooltip"
-                     title="Trier par Accuracy" />
-            </a>
-
-           @Html.DisplayNameFor(model => model.Exp)
+           @Html.DisplayNameFor(model => model.MoveName)
         </th>
         <th></th>
     </tr>
@@ -67,37 +57,28 @@
                 @Html.DisplayFor(modelItem => item.PokemonName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Level)
+                @Html.DisplayFor(modelItem => item.MoveName)
             </td>
+
             <td>
-                @Html.DisplayFor(modelItem => item.Exp)
-            </td>
-            <td>
-                <a href='@Url.Action("Details", "PlayersPokemon", new { id = item.Id })' style="text-decoration:none">
+                <a href='@Url.Action("Details", "PlayersMove", new { id = item.Id })' style="text-decoration:none">
                     <img src='@Url.Content("~/Images/UI/Details.png")'
                          alt="Détails" class="CMD_Icon_3"
                          data-toggle="tooltip"
                          title="Voir les détails du film [@item.Id]" />
                 </a> &nbsp;
 
-                <a href='@Url.Action("Lister", "PlayersMove", new { id = item.Username })' style="text-decoration:none">
-                    <img src='@Url.Content("~/Images/UI/Details.png")'
-                         alt="Voir les Pokemons" class="CMD_Icon_3"
-                         data-toggle="tooltip"
-                         title="Voir les Attaques du Pokemon [@item.Username]" />
-                </a>&nbsp;
-
-                <a href='@Url.Action("Editer", "PlayersPokemon", new { id = item.Id })' style="text-decoration:none">
+                <a href='@Url.Action("Editer", "PlayersMove", new { id = item.Id })' style="text-decoration:none">
                     <img src='@Url.Content("~/Images/UI/Edit.png")'
                          alt="Editer" class="CMD_Icon_3"
                          data-toggle="tooltip"
                          title="Éditer le Move [@item.Id]" />
                 </a> &nbsp;
                                 
-                <a href='@Url.Action("Effacer", "PlayersPokemon", new { id = item.Id })' style="text-decoration:none">
+                <a href='@Url.Action("Effacer", "PlayersMove", new { id = item.Id })' style="text-decoration:none">
                     <img src='@Url.Content("~/Images/UI/Delete.png")'
                          alt="Delete" class="CMD_Icon_3"
-                         onclick="BBConfirm('Effacer le film [@item.Id]?', '@Url.Action("Effacer", "PlayersPokemon", new { id = item.Id })')"
+                         onclick="BBConfirm('Effacer le film [@item.Id]?', '@Url.Action("Effacer", "PlayersMove", new { id = item.Id })')"
                          data-toggle="tooltip"
                          title="Effacer le Move [@item.Id]" />
                  </a>&nbsp;

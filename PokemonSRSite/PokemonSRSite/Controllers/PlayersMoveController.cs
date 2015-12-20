@@ -35,25 +35,16 @@ namespace PokemonSRSite.Controllers
 
         public ActionResult Lister(String Id)
         {
-            Players p = new Players(Session["Main_DB"]);
-            if (p.SelectByUsername(Id))
-            {
-                PlayersPokemons playerspokemons = new PlayersPokemons(p.player,Session["Main_DB"]);
-            
-                PlayersMoves pkmn = new PlayersMoves(playerspokemons.playerspokemon, Session["Main_DB"]);
+            PlayersMoves pkmn = new PlayersMoves(Session["Main_DB"]);
 
-                String orderBy = "";
-                if (Session["PlayersMove_SortBy"] != null)
-                    orderBy = (String)Session["PlayersMove_SortBy"] + " " + (String)Session["PlayersMove_SortOrder"];
+            String orderBy = "";
+            if (Session["PlayersPokemon_SortBy"] != null)
+                orderBy = (String)Session["PlayersPokemon_SortBy"] + " " + (String)Session["PlayersPokemon_SortOrder"];
 
-                pkmn.SelectAll(orderBy);
+            pkmn.playersmove.Username = Id;
+            pkmn.SelectAll(orderBy);
 
-                return View(pkmn.ToList());
-            }
-            else
-            {
-                return RedirectToAction("Lister", "Player");
-            }
+            return View(pkmn.ToList());
         }
     }
 }
