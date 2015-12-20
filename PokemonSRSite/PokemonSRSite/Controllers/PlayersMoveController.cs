@@ -46,5 +46,12 @@ namespace PokemonSRSite.Controllers
 
             return View(pkmn.ToList());
         }
+
+        public ActionResult Effacer(String Id)
+        {
+            PlayersMoves pp = new PlayersMoves(Session["Main_DB"]);
+            pp.DeleteRecordByID(Id);
+            return RedirectToAction("Lister", "PlayersMove");
+        }
     }
 }
