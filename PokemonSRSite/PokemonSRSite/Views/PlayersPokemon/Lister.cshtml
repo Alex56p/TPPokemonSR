@@ -80,7 +80,7 @@
                          title="Voir les détails du film [@item.Id]" />
                 </a> &nbsp;
 
-                <a href='@Url.Action("Lister", "PlayersMove", new { id = item.Username })' style="text-decoration:none">
+                <a href='@Url.Action("Lister", "PlayersMove", new { id = item.Id })' style="text-decoration:none">
                     <img src='@Url.Content("~/Images/UI/Details.png")'
                          alt="Voir les Pokemons" class="CMD_Icon_3"
                          data-toggle="tooltip"

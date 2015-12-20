@@ -41,10 +41,11 @@ namespace PokemonSRSite.Controllers
             if (Session["PlayersPokemon_SortBy"] != null)
                 orderBy = (String)Session["PlayersPokemon_SortBy"] + " " + (String)Session["PlayersPokemon_SortOrder"];
 
-            pkmn.playersmove.Username = Id;
-            pkmn.SelectAll(orderBy);
+            pkmn.playersmove.Username = pkmn.getUsername(Id);
+            pkmn.SelectFromId(Id,orderBy);
 
-            return View(pkmn.ToList());
+            List<PlayersMove> pm = pkmn.ToList();
+            return View(pm);
         }
 
         public ActionResult Effacer(String Id)

@@ -238,14 +238,14 @@ namespace PokemonSRSite
             }
         }
 
-        public override void SelectAll(string orderBy = "")
+        public void SelectFromId(string Id,string orderBy = "")
         {
             string sql = "SELECT * " +
                             "FROM Players" +
                             " INNER JOIN PlayersPokemons ON Players.Username = PlayersPokemons.Username" +
                             " INNER JOIN Pokemons ON PlayersPokemons.PokemonID = Pokemons.Id" +
                             " INNER JOIN PlayersMoves ON PlayersMoves.IdPlayersPokemon = PlayersPokemons.ID" +
-                            " WHERE Players.Username = '" + playersmove.Username + "'";
+                            " WHERE PlayersPokemons.Id = " + Id;
 
             if (orderBy != "")
                 sql += " ORDER BY " + orderBy;
