@@ -219,12 +219,59 @@ namespace PokemonSRSite
 
     public class PlayersMoves : SqlExpressUtilities.SqlExpressWrapper
     {
-        public PlayersPokemon playerspokemon { get; set; }
+        public PlayersMove playersmove{ get; set; }
 
-        public PlayersMoves(object cs)
+        public PlayersMoves(PlayersPokemon pp, object cs)
             : base(cs)
         {
-            playerspokemon = new PlayersPokemon();
+            playersmove = new PlayersMove();
+        }
+
+        public override void DeleteRecordByID(String ID)
+        {
+            if (this.SelectByID(ID))
+            {
+                base.DeleteRecordByID(ID);
+            }
+        }
+
+        public override void SelectAll(string orderBy = "")
+        {
+            string sql = "SELECT * " +
+                            "FROM Players" +
+                            " INNER JOIN PlayersPokemons ON Players.Username = PlayersPokemons.Username" +
+                            " INNER JOIN Pokemons ON PlayersPokemons.PokemonID = Pokemons.Id" +
+                            " WHERE Players.Username = " + SqlExpressUtilities.SQLHelper.ConvertValueFromMemberToSQL(playerspokemon.player.Username);
+
+            if (orderBy != "")
+                sql += " ORDER BY " + orderBy;
+
+            QuerySQL(sql);
+        }
+
+        public List<PlayersPokemon> ToList()
+        {
+            List<object> list = this.RecordsList();
+            List<PokemonSRSite.PlayersPokemon> playerspokemon_list = new List<PlayersPokemon>();
+            foreach (PlayersPokemon pp in list)
+            {
+                pp.PokemonName = getNameByID();
+                playerspokemon_list.Add(pp);
+            }
+
+            return playerspokemon_list;
+        }
+
+        public String getNameByID()
+        {
+            QuerySQL("SELECT Name FROM Pokemons P INNER JOIN PlayersPokemons PP ON PP.PokemonID = P.Id Where ID = " + playerspokemon.PokemonID);
+            String name = "";
+            if (reader != null && reader.Read())
+            {
+                name = reader.GetString(0);
+                EndQuerySQL();
+            }
+            return name;
         }
     }
 
