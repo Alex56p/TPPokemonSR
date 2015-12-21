@@ -461,9 +461,10 @@ namespace PokemonSRSite
             {
                 pp.PokemonName = getNameByID(pp.PokemonID.ToString());
 
-                PlayersPokemon.AllUsers = getAllUsers();
+                
                 playerspokemon_list.Add(pp);
             }
+            PlayersPokemon.AllUsers = getAllUsers();
             PlayersPokemon.AllPokemons = getlistPokemons();
             PlayersPokemon.AllIdPokemons = getlistIDPokemon();
             return playerspokemon_list;
