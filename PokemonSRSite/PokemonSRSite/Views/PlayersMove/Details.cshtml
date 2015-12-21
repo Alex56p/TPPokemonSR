@@ -37,12 +37,12 @@
         </table>
 </div>
 <p>
-    <a href='@Url.Action("Editer", "PlayerMove", new { id = Model.Id })' style="text-decoration:none">
+    <a href='@Url.Action("Editer", "PlayersMove", new { id = Model.Id })' style="text-decoration:none">
         <img src='@Url.Content("~/Images/UI/Edit.png")'
              alt="Editer" class="CMD_Icon_3"
              data-toggle="tooltip"
              title="Éditer le Move du Pokemon [@Model.MoveName]" />
     </a> &nbsp;
  |
-    @Html.ActionLink("Retour", "Lister")
+    @Html.ActionLink("Retour", "Lister", new { Id = (String)Session["IdPlayersPokemon"] })
 </p>

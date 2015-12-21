@@ -71,5 +71,5 @@
 }
 
 <div>
-    @Html.ActionLink("Retour", "Lister")
+    @Html.ActionLink("Retour", "Lister", new { Id = (String)Session["IdPlayersPokemon"] })
 </div>

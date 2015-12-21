@@ -30,12 +30,12 @@ namespace PokemonSRSite.Controllers
                     Session["PlayersPokemon_SortOrder"] = "ASC";
                 }
             }
-            return RedirectToAction("Lister", "PlayersPokemonPlayer");
+            return RedirectToAction("Lister", "PlayersPokemon", new { Id = (String)Session["Username"] });
         }
 
         public ActionResult Lister(String Id)
         {
-
+            Session["Username"] = Id;
                 PlayersPokemons pkmn = new PlayersPokemons(Session["Main_DB"]);
                 pkmn.playerspokemon.Username = Id;
 
@@ -64,7 +64,7 @@ namespace PokemonSRSite.Controllers
                 players.playerspokemon.Username = Request["users"].ToString();
                 players.playerspokemon.PokemonID = int.Parse(Request["pokemons"]);
                 players.AddPlayersPokemon();
-                return RedirectToAction("Lister", "Player");
+                return RedirectToAction("Lister", "PlayersPokemon", new { Id = (String)Session["Username"] });
             }
             return View(player);
         }
@@ -78,7 +78,7 @@ namespace PokemonSRSite.Controllers
                 return View(pp.playerspokemon);
             }
             else
-                return RedirectToAction("Lister", "Player");
+                return RedirectToAction("Lister", "PlayersPokemon", new { Id = (String)Session["Username"] });
         }
 
         public ActionResult Editer(String Id)
@@ -89,7 +89,7 @@ namespace PokemonSRSite.Controllers
                 return View(pp.playerspokemon);
             }
             else
-                return RedirectToAction("Lister", "Player");
+                return RedirectToAction("Lister", "PlayersPokemon", new { Id = (String)Session["Username"] });
         }
 
         [HttpPost]
@@ -104,7 +104,7 @@ namespace PokemonSRSite.Controllers
                     players.playerspokemon.PokemonID = int.Parse(Request["pokemons"]);
                     players.playerspokemon.Username = Request["users"].ToString();
                     players.UdpatePlayersPokemon();
-                    return RedirectToAction("Lister", "Player");
+                    return RedirectToAction("Lister", "PlayersPokemon", new { Id = (String)Session["Username"] });
                 }
             }
             return View(pp);
@@ -114,7 +114,7 @@ namespace PokemonSRSite.Controllers
         {
             PlayersPokemons pp = new PlayersPokemons(Session["Main_DB"]);
             pp.DeleteRecordByID(Id);
-            return RedirectToAction("Lister", "PlayersPokemon");
+            return RedirectToAction("Lister", "PlayersPokemon", new { Id = (String)Session["Username"] });
         }
     }
 }

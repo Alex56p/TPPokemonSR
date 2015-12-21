@@ -15,7 +15,7 @@
     <tr>
 
         <th>
-            <a href='@Url.Action("Sort", "PlayersPokemon",new {sortBy = "Name"})' style="text-decoration:none">
+            <a href='@Url.Action("Sort", "PlayersPokemon",new {sortBy = "Players.Username"})' style="text-decoration:none">
                 <img src='@Url.Content("~/Images/UI/Sort.png")'
                      alt="Sort" class="CMD_Icon_4"
                      data-toggle="tooltip"
@@ -25,7 +25,7 @@
             @Html.DisplayNameFor(model => model.Username)
         </th>
         <th>
-            <a href='@Url.Action("Sort", "PlayersPokemon",new {sortBy = "Type"})' style="text-decoration:none">
+            <a href='@Url.Action("Sort", "PlayersPokemon",new {sortBy = "Pokemons.Name"})' style="text-decoration:none">
                 <img src='@Url.Content("~/Images/UI/Sort.png")'
                      alt="Sort" class="CMD_Icon_4"
                      data-toggle="tooltip"
@@ -35,7 +35,7 @@
             @Html.DisplayNameFor(model => model.PokemonName)
         </th>
         <th>
-            <a href='@Url.Action("Sort", "PlayersPokemon", new { sortBy = "Damage" })' style="text-decoration:none">
+            <a href='@Url.Action("Sort", "PlayersPokemon", new { sortBy = "PlayersPokemons.Level" })' style="text-decoration:none">
                 <img src='@Url.Content("~/Images/UI/Sort.png")'
                      alt="Sort" class="CMD_Icon_4"
                      data-toggle="tooltip"
@@ -45,7 +45,7 @@
            @Html.DisplayNameFor(model => model.Level)
         </th>
         <th>
-            <a href='@Url.Action("Sort", "PlayersPokemon", new { sortBy = "Accuracy" })' style="text-decoration:none">
+            <a href='@Url.Action("Sort", "PlayersPokemon", new { sortBy = "PlayersPokemons.Exp" })' style="text-decoration:none">
                 <img src='@Url.Content("~/Images/UI/Sort.png")'
                      alt="Sort" class="CMD_Icon_4"
                      data-toggle="tooltip"
