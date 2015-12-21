@@ -21,16 +21,32 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Username, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Username)
-                @Html.ValidationMessageFor(model => model.Username)
+                <select name="Users" id="users">
+                    @{
+                        foreach (string p in PlayersPokemon.AllUsers)
+                        {
+                            <option value="@p" selected>@p</option>
+                        }
+                    }
+                </select>
             </div>
         </div>
 
+
+
         <div class="form-group">
-            @Html.LabelFor(model => model.PokemonID, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PokemonName, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.PokemonID)
-                @Html.ValidationMessageFor(model => model.PokemonID)
+                <select name="Pokemons" id="pokemons">
+                    @{
+                        int index = 0;
+                        foreach (string p in PlayersPokemon.AllPokemons)
+                        {
+                           <option value="@PlayersPokemon.AllIdPokemons.ElementAt(index)" selected>@p</option>
+                           index++;
+                        }
+                    }
+                </select>
             </div>
         </div>
 

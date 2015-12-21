@@ -54,7 +54,7 @@ namespace PokemonSRSite.Controllers
             if (ModelState.IsValid)
             {
                 Pokemons pokemons = new Pokemons(Session["Main_DB"]);
-                pokemons.pokemon = pokemon;;
+                pokemons.pokemon = pokemon; ;
                 pokemons.pokemon.UpLoadPoster(Request);
                 pokemons.Insert();
                 return RedirectToAction("Lister", "Pokemon");

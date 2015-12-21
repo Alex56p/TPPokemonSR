@@ -59,7 +59,10 @@ namespace PokemonSRSite.Controllers
             if (ModelState.IsValid)
             {
                 PlayersPokemons players = new PlayersPokemons(Session["Main_DB"]);
+
                 players.playerspokemon = player;
+                players.playerspokemon.Username = Request["users"].ToString();
+                players.playerspokemon.PokemonID = int.Parse(Request["pokemons"]);
                 players.AddPlayersPokemon();
                 return RedirectToAction("Lister", "Player");
             }
@@ -72,7 +75,6 @@ namespace PokemonSRSite.Controllers
             PlayersPokemons pp = new PlayersPokemons(Session["Main_DB"]);
             if (pp.SelectByID(Id))
             {
-                pp.playerspokemon.PokemonName = pp.getNameByID();
                 return View(pp.playerspokemon);
             }
             else
@@ -84,7 +86,6 @@ namespace PokemonSRSite.Controllers
             PlayersPokemons pp = new PlayersPokemons(Session["Main_DB"]);
             if (pp.SelectByID(Id))
             {
-                pp.playerspokemon.PokemonName = pp.getNameByID();
                 return View(pp.playerspokemon);
             }
             else
@@ -100,6 +101,8 @@ namespace PokemonSRSite.Controllers
                 if (players.SelectByID(pp.Id))
                 {
                     players.playerspokemon = pp;
+                    players.playerspokemon.PokemonID = int.Parse(Request["pokemons"]);
+                    players.playerspokemon.Username = Request["users"].ToString();
                     players.UdpatePlayersPokemon();
                     return RedirectToAction("Lister", "Player");
                 }

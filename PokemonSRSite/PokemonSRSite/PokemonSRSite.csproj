@@ -239,6 +239,9 @@
     <Content Include="Views\PlayersPokemon\Editer.cshtml" />
     <Content Include="Views\PlayersPokemon\Ajouter.cshtml" />
     <Content Include="Views\PlayersMove\Lister.cshtml" />
+    <Content Include="Views\PlayersMove\Ajouter.cshtml" />
+    <Content Include="Views\PlayersMove\Editer.cshtml" />
+    <Content Include="Views\PlayersMove\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

@@ -30,7 +30,7 @@ namespace PokemonSRSite.Controllers
                     Session["PlayersMove_SortOrder"] = "ASC";
                 }
             }
-            return RedirectToAction("Lister", "PlayersMovePlayer");
+            return RedirectToAction("Lister", "PlayersMove");
         }
 
         public ActionResult Lister(String Id)
@@ -53,6 +53,70 @@ namespace PokemonSRSite.Controllers
             PlayersMoves pp = new PlayersMoves(Session["Main_DB"]);
             pp.DeleteRecordByID(Id);
             return RedirectToAction("Lister", "PlayersMove");
+        }
+
+        public ActionResult Ajouter()
+        {
+            return View(new PlayersMove());
+        }
+
+        [HttpPost]
+        public ActionResult Ajouter(PlayersMove PMove)
+        {
+            if (ModelState.IsValid)
+            {
+                PlayersMoves moves = new PlayersMoves(Session["Main_DB"]);
+
+                moves.playersmove = PMove;
+                moves.playersmove.IdMove = int.Parse(Request["moves"]);
+                moves.playersmove.IdPlayersPokemon = int.Parse(Request["playerspokemon"]);
+                moves.AddPlayersMove();
+                return RedirectToAction("Lister", "Player");
+            }
+            return View(PMove);
+        }
+
+        public ActionResult Editer(String Id)
+        {
+            PlayersMoves pp = new PlayersMoves(Session["Main_DB"]);
+            if (pp.SelectByID(Id))
+            {
+                return View(pp.playersmove);
+            }
+            else
+                return RedirectToAction("Lister", "Player");
+        }
+
+        [HttpPost]
+        public ActionResult Editer(PlayersMove pp)
+        {
+            PlayersMoves players = new PlayersMoves(Session["Main_DB"]);
+            if (ModelState.IsValid)
+            {
+                if (players.SelectByID(pp.Id))
+                {
+                    players.playersmove = pp;
+                    players.playersmove.IdPlayersPokemon = int.Parse(Request["playerspokemons"]);
+                    players.playersmove.IdMove = int.Parse(Request["move"]);
+                    players.UdpatePlayersMove();
+                    return RedirectToAction("Lister", "Player");
+                }
+            }
+            return View(pp);
+        }
+
+        public ActionResult Details(String Id)
+        {
+            PlayersMoves pp = new PlayersMoves(Session["Main_DB"]);
+            if (pp.SelectByID(Id))
+            {
+                pp.playersmove.PokemonName = pp.getPokemonNameByID(pp.playersmove.IdPlayersPokemon.ToString());
+                pp.playersmove.MoveName = pp.getMoveName(pp.playersmove.IdMove.ToString());
+                pp.playersmove.Username = pp.getUsername(pp.playersmove.IdPlayersPokemon.ToString());
+                return View(pp.playersmove);
+            }
+            else
+                return RedirectToAction("Lister", "Player");
         }
     }
 }

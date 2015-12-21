@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<PlayersMove>
 
-<h2>PlayersPokemon</h2>
+<h2>PlayersMove</h2>
 
 <p>
     <a href='@Url.Action("Ajouter", "PlayersMove")' style="text-decoration:none">
@@ -15,7 +15,7 @@
     <tr>
 
         <th>
-            <a href='@Url.Action("Sort", "PlayersMove",new {sortBy = "Name"})' style="text-decoration:none">
+            <a href='@Url.Action("Sort", "PlayersMove",new {sortBy = "Username"})' style="text-decoration:none">
                 <img src='@Url.Content("~/Images/UI/Sort.png")'
                      alt="Sort" class="CMD_Icon_4"
                      data-toggle="tooltip"
@@ -25,7 +25,7 @@
             @Html.DisplayNameFor(model => model.Username)
         </th>
         <th>
-            <a href='@Url.Action("Sort", "PlayersMove",new {sortBy = "Type"})' style="text-decoration:none">
+            <a href='@Url.Action("Sort", "PlayersMove",new {sortBy = "PokemonName"})' style="text-decoration:none">
                 <img src='@Url.Content("~/Images/UI/Sort.png")'
                      alt="Sort" class="CMD_Icon_4"
                      data-toggle="tooltip"
@@ -35,7 +35,7 @@
             @Html.DisplayNameFor(model => model.PokemonName)
         </th>
         <th>
-            <a href='@Url.Action("Sort", "PlayersMove", new { sortBy = "Damage" })' style="text-decoration:none">
+            <a href='@Url.Action("Sort", "PlayersMove", new { sortBy = "MoveName" })' style="text-decoration:none">
                 <img src='@Url.Content("~/Images/UI/Sort.png")'
                      alt="Sort" class="CMD_Icon_4"
                      data-toggle="tooltip"

@@ -211,6 +211,8 @@ namespace PokemonSRSite
         public string Username { get; set; }
         public string MoveName { get; set; }
         public string PokemonName { get; set; }
+        public static List<PlayersPokemon> AllPlayersPokemon { get; set; }
+        public static List<Move> AllMovesNames { get; set; }
 
         public PlayersMove()
         {
@@ -240,11 +242,12 @@ namespace PokemonSRSite
 
         public void SelectFromId(string Id,string orderBy = "")
         {
-            string sql = "SELECT * " +
-                            "FROM Players" +
+            string sql = "SELECT PlayersMoves.Id, Players.Username, Moves.Name, Pokemons.Name" +
+                            " FROM Players" +
                             " INNER JOIN PlayersPokemons ON Players.Username = PlayersPokemons.Username" +
                             " INNER JOIN Pokemons ON PlayersPokemons.PokemonID = Pokemons.Id" +
                             " INNER JOIN PlayersMoves ON PlayersMoves.IdPlayersPokemon = PlayersPokemons.ID" +
+                            " INNER JOIN Moves ON Moves.Id = PlayersMoves.IdMove" +
                             " WHERE PlayersPokemons.Id = " + Id;
 
             if (orderBy != "")
@@ -255,17 +258,71 @@ namespace PokemonSRSite
 
         public List<PlayersMove> ToList()
         {
-            List<object> list = this.RecordsList();
             List<PokemonSRSite.PlayersMove> playerspokemon_list = new List<PlayersMove>();
-            foreach (PlayersMove pm in list)
+
+            if(reader != null)
             {
-                pm.MoveName = getMoveName(pm.IdMove.ToString());
-                pm.PokemonName = getPokemonNameByID(pm.IdPlayersPokemon.ToString());
-                pm.Username = getUsername(pm.IdPlayersPokemon.ToString());
-                playerspokemon_list.Add(pm);
+                while(reader.Read())
+                {
+                    PlayersMove pm = new PlayersMove();
+                    pm.Id = reader.GetInt32(0);
+                    pm.Username = reader.GetString(1);
+                    pm.MoveName = reader.GetString(2);
+                    pm.PokemonName = reader.GetString(3);
+
+                    playerspokemon_list.Add(pm);
+                }
             }
 
+            PlayersMove.AllPlayersPokemon = getAllPlayersPokemon();
+            PlayersMove.AllMovesNames = getAllMoves();
             return playerspokemon_list;
+        }
+
+        public List<Move> getAllMoves()
+        {
+            QuerySQL("SELECT Id, Name FROM MOVES");
+            List<Move> list = new List<Move>();
+            Move m = new Move();
+            
+            if(reader != null)
+            {
+                while(reader.Read())
+                {
+                    m = new Move();
+                    m.Id = reader.GetInt32(0);
+                    m.Name = reader.GetString(1);
+
+                    list.Add(m);
+                }
+            }
+
+            EndQuerySQL();
+            return list;
+        }
+
+        public List<PlayersPokemon> getAllPlayersPokemon()
+        {
+            QuerySQL("SELECT PlayersPokemons.Id, PokemonID, Username, Pokemons.Name FROM PlayersPokemons INNER JOIN Pokemons ON PlayersPokemons.PokemonID = Pokemons.ID");
+            PlayersPokemon pp = new PlayersPokemon();
+            List<PlayersPokemon> list = new List<PlayersPokemon>();
+            if (reader != null)
+            {
+                while(reader.Read())
+                {
+                    pp = new PlayersPokemon();
+                    pp.Id = reader.GetInt32(0);
+                    pp.PokemonID = reader.GetInt32(1);
+                    pp.Username = reader.GetString(2);
+                    pp.PokemonName = reader.GetString(3);
+
+                    list.Add(pp);
+                }
+            }
+
+            EndQuerySQL();
+
+            return list;
         }
 
         public string getMoveName(string id)
@@ -317,6 +374,20 @@ namespace PokemonSRSite
             }
             return name;
         }
+
+        public void AddPlayersMove()
+        {
+            String sql = "INSERT INTO PlayersMoves VALUES(" + playersmove.IdPlayersPokemon + ", " + playersmove.IdMove + ")";
+            NonQuerySQL(sql);
+        }
+
+        public void UdpatePlayersMove()
+        {
+            String sql = "UPDATE PlayersMoves SET [IdPlayersPokemon] = " + playersmove.IdPlayersPokemon +
+                ", [IdMove] = " + playersmove.IdMove + "WHERE ID = " + playersmove.Id;
+
+            NonQuerySQL(sql);
+        }
     }
 
     public partial class PlayersPokemon
@@ -328,6 +399,10 @@ namespace PokemonSRSite
         public String Username { get; set; }
         public int Level { get; set; }
         public int Exp { get; set; }
+        public static List<string> AllPokemons { get; set; }
+        public static List<string> AllIdPokemons { get; set; }
+        public static List<string> AllUsers { get; set; }
+
 
         public PlayersPokemon()
         {
@@ -384,16 +459,76 @@ namespace PokemonSRSite
             List<PokemonSRSite.PlayersPokemon> playerspokemon_list = new List<PlayersPokemon>();
             foreach (PlayersPokemon pp in list)
             {
-                pp.PokemonName = getNameByID();
+                pp.PokemonName = getNameByID(pp.PokemonID.ToString());
+
+                PlayersPokemon.AllUsers = getAllUsers();
                 playerspokemon_list.Add(pp);
             }
-
+            PlayersPokemon.AllPokemons = getlistPokemons();
+            PlayersPokemon.AllIdPokemons = getlistIDPokemon();
             return playerspokemon_list;
         }
 
-        public String getNameByID()
+        public List<string> getAllUsers()
         {
-            QuerySQL("SELECT Name FROM Pokemons Where ID = " + playerspokemon.PokemonID);
+            List<string> list = new List<string>();
+            string sql = "SELECT Username FROM Players";
+            QuerySQL(sql);
+
+            if (reader != null)
+            {
+                while (reader.Read())
+                {
+                    list.Add(reader.GetString(0));
+                }
+            }
+
+            reader.Close();
+
+            return list;
+        }
+
+        public List<string> getlistIDPokemon()
+        {
+            List<string> list = new List<string>();
+            string sql = "SELECT Id FROM Pokemons";
+            QuerySQL(sql);
+
+            if (reader != null)
+            {
+                while (reader.Read())
+                {
+                    list.Add(reader.GetInt32(0).ToString());
+                }
+            }
+
+            reader.Close();
+
+            return list;
+        }
+
+        public List<string> getlistPokemons()
+        {
+            List<string> list = new List<string>();
+            string sql = "SELECT Name FROM Pokemons";
+            QuerySQL(sql);
+
+            if (reader != null)
+            {
+                while (reader.Read())
+                {
+                    list.Add(reader.GetString(0));
+                }
+            }
+
+            reader.Close();
+
+            return list;
+        }
+
+        public String getNameByID(string id)
+        {
+            QuerySQL("SELECT Name FROM Pokemons Where ID = " + id);
             String name = "";
             if(reader != null && reader.Read())
             {

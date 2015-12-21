@@ -1,0 +1,64 @@
+﻿@model PokemonSRSite.PlayersMove
+
+@{
+    ViewBag.Title = "Ajouter";
+}
+
+<h2>Ajouter</h2>
+
+@using (Html.BeginForm("Ajouter",
+                        "PlayersMove",
+                        FormMethod.Post,
+                        new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Film</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdPlayersPokemon, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="PlayersPokemon" id="playerspokemon">
+                    @{
+                        foreach (PlayersPokemon p in PlayersMove.AllPlayersPokemon)
+                        {
+                            string phrase = p.Username + " | " + p.PokemonName;
+                            <option value="@p.Id" selected>@phrase</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.IdMove, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="Moves" id="moves">
+                    @{
+                        int index = 0;
+                        foreach (Move p in PlayersMove.AllMovesNames)
+                        {
+                           <option value="@p.Id" selected>@p.Name</option>
+                           index++;
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Soumettre" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Retour", "Lister")
+</div>
